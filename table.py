@@ -6,8 +6,8 @@ def generate_pdf():
     # Create a PDF document
     doc = SimpleDocTemplate("table.pdf", pagesize=letter)
 
-    # Define table data as a nested list
-    table_data = [
+    # Define table data as nested lists
+    patient_data = [
         ['Patient ID', 'Name', 'Age', 'Gender', 'Condition'],
         ['001', 'Ahmed Mohammed', 30, 'Male', 'Fever'],
         ['002', 'Fatima Ali', 45, 'Female', 'Diabetes'],
@@ -16,10 +16,30 @@ def generate_pdf():
         ['005', 'Abdulrahman Youssef', 38, 'Male', 'Headache'],
     ]
 
-    # Create a table object and specify the table data
-    table = Table(table_data)
+    appointment_data = [
+        ['Appointment ID', 'Date', 'Time', 'Doctor', 'Patient ID'],
+        ['101', '2023-06-16', '09:00', 'Dr. Ahmed', '001'],
+        ['102', '2023-06-17', '14:30', 'Dr. Fatima', '002'],
+        ['103', '2023-06-18', '11:15', 'Dr. Mohamed', '003'],
+        ['104', '2023-06-19', '16:45', 'Dr. Sara', '004'],
+        ['105', '2023-06-20', '10:30', 'Dr. Abdulrahman', '005'],
+    ]
 
-    # Define table style
+    medication_data = [
+        ['Medication ID', 'Name', 'Dosage', 'Frequency', 'Patient ID'],
+        ['201', 'Paracetamol', '500 mg', '3 times a day', '001'],
+        ['202', 'Insulin', '10 units', 'Once daily', '002'],
+        ['203', 'Lisinopril', '10 mg', 'Twice daily', '003'],
+        ['204', 'Ibuprofen', '400 mg', 'As needed', '004'],
+        ['205', 'Aspirin', '81 mg', 'Once daily', '005'],
+    ]
+
+    # Create table objects and specify the table data
+    patient_table = Table(patient_data)
+    appointment_table = Table(appointment_data)
+    medication_table = Table(medication_data)
+
+    # Define table styles
     table_style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
@@ -29,11 +49,13 @@ def generate_pdf():
         ('BACKGROUND', (0, 1), (-1, -1), colors.lightgrey),
     ])
 
-    # Apply the table style
-    table.setStyle(table_style)
+    # Apply the table styles
+    patient_table.setStyle(table_style)
+    appointment_table.setStyle(table_style)
+    medication_table.setStyle(table_style)
 
-    # Add the table to the PDF document
-    elements = [table]
+    # Add the tables to the PDF document
+    elements = [patient_table, appointment_table, medication_table]
     doc.build(elements)
 
     print("PDF generated successfully.")
