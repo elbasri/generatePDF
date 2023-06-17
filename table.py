@@ -1,6 +1,7 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
 
 def generate_pdf():
     # Create a PDF document
@@ -8,54 +9,45 @@ def generate_pdf():
 
     # Define table data as nested lists
     patient_data = [
-        ['Patient ID', 'Name', 'Age', 'Gender', 'Condition'],
-        ['001', 'Ahmed Mohammed', 30, 'Male', 'Fever'],
-        ['002', 'Fatima Ali', 45, 'Female', 'Diabetes'],
-        ['003', 'Mohamed Jamal', 55, 'Male', 'High Blood Pressure'],
-        ['004', 'Sara Abdullah', 62, 'Female', 'Arthritis'],
-        ['005', 'Abdulrahman Youssef', 38, 'Male', 'Headache'],
+        ['ID Patient', 'Nom', 'Âge', 'Sexe', 'Condition'],
+        ['001', 'Ahmed Mohammed', 30, 'Homme', 'Fièvre'],
+        ['002', 'Fatima Ali', 45, 'Femme', 'Diabète'],
+        ['003', 'Mohamed Jamal', 55, 'Homme', 'Hypertension artérielle'],
+        ['004', 'Sara Abdullah', 62, 'Femme', 'Arthrite'],
+        ['005', 'Abdulrahman Youssef', 38, 'Homme', 'Maux de tête'],
     ]
 
-    appointment_data = [
-        ['Appointment ID', 'Date', 'Time', 'Doctor', 'Patient ID'],
-        ['101', '2023-06-16', '09:00', 'Dr. Ahmed', '001'],
-        ['102', '2023-06-17', '14:30', 'Dr. Fatima', '002'],
-        ['103', '2023-06-18', '11:15', 'Dr. Mohamed', '003'],
-        ['104', '2023-06-19', '16:45', 'Dr. Sara', '004'],
-        ['105', '2023-06-20', '10:30', 'Dr. Abdulrahman', '005'],
+    doctor_data = [
+        ['ID Médecin', 'Nom', 'Spécialité', 'Expérience'],
+        ['D001', 'Dr. Ahmed Hassan', 'Cardiologie', '10 ans'],
+        ['D002', 'Dr. Fatima Khalid', 'Pédiatrie', '8 ans'],
+        ['D003', 'Dr. Mohamed Ali', 'Dermatologie', '15 ans'],
+        ['D004', 'Dr. Sara Mahmoud', 'Orthopédie', '12 ans'],
+        ['D005', 'Dr. Abdullah Khalil', 'Neurologie', '6 ans'],
     ]
 
-    medication_data = [
-        ['Medication ID', 'Name', 'Dosage', 'Frequency', 'Patient ID'],
-        ['201', 'Paracetamol', '500 mg', '3 times a day', '001'],
-        ['202', 'Insulin', '10 units', 'Once daily', '002'],
-        ['203', 'Lisinopril', '10 mg', 'Twice daily', '003'],
-        ['204', 'Ibuprofen', '400 mg', 'As needed', '004'],
-        ['205', 'Aspirin', '81 mg', 'Once daily', '005'],
-    ]
-
-    # Create table objects and specify the table data
-    patient_table = Table(patient_data)
-    appointment_table = Table(appointment_data)
-    medication_table = Table(medication_data)
-
-    # Define table styles
+    # Create a table style
     table_style = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
         ('BACKGROUND', (0, 1), (-1, -1), colors.lightgrey),
+        ('BOX', (0, 0), (-1, -1), 1, colors.black),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ])
 
-    # Apply the table styles
+    # Create table objects and specify the table data and style
+    patient_table = Table(patient_data)
     patient_table.setStyle(table_style)
-    appointment_table.setStyle(table_style)
-    medication_table.setStyle(table_style)
+
+    doctor_table = Table(doctor_data)
+    doctor_table.setStyle(table_style)
 
     # Add the tables to the PDF document
-    elements = [patient_table, appointment_table, medication_table]
+    elements = [Paragraph("Données des Patients", style=getSampleStyleSheet()['Heading1']), patient_table,
+                Paragraph("Données des Médecins", style=getSampleStyleSheet()['Heading1']), doctor_table]
     doc.build(elements)
 
     print("PDF generated successfully.")
